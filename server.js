@@ -1,18 +1,16 @@
 'use strict';
-const Mustache = require('mustache')
-const Hapi = require('hapi')
-const fs = require('fs')
+const hapi = require('hapi')
 const routes = require('./routes/routes.js')
-var controller = require('./controller/controller.js')
+const controller = require('./controller/controller.js')
 
 //Initialize server and set port
-const server = new Hapi.Server();
+const server = new hapi.Server();
 server.connection({ port: 3000 });
 
-//Init Routes
+//Initialize routes
 routes.init(server)
 
-//Start server and throw error on failure
+//Start server or throw error on failure
 server.start((err) => {
     if (err) {
         throw err;
