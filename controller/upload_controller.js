@@ -30,9 +30,6 @@ module.exports = {
 		});
 		db.close();
 		
-		
-		//var output = Mustache.render(template, content);
-        //reply (output)
         reply ('test')
     }
 }

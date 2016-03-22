@@ -1,5 +1,9 @@
 module.exports = {
 	load: function (request, reply) {
-		reply ('Wee, it works!')
-	}
+		const template = require('../template.js')
+		data = {
+			video: encodeURIComponent(request.params.video)
+		}
+		reply (template.filled('video', data))
+    }
 }

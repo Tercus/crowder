@@ -1,5 +1,9 @@
 module.exports = {
 	load: function (request, reply) {
-        reply ('Hello Person. You want to visit: ' + encodeURIComponent(request.params.user) + '!')
+		const template = require('../template.js')
+		data = {
+			user: encodeURIComponent(request.params.user)
+		}
+		reply (template.filled('user', data))
     }
 }
