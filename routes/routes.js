@@ -22,6 +22,11 @@ module.exports = {
 		})*/
 		server.route({
 			method: 'GET',
+			path: '/',
+			handler: controller.main('default')
+		})
+		server.route({
+			method: 'GET',
 			path: '/watch/{video}',
 			handler: controller.main('video')
 		})
