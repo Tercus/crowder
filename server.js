@@ -9,12 +9,6 @@ var controller = require('./controller/controller.js')
 const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
-//Load template from a file into a variable
-//var template = fs.readFileSync('template.html').toString()
-
-//Apply mustache to the template and save the output in variable
-//var output = Mustache.render(template, videos.filltemplate());
-
 //Init Routes
 routes.init(server)
 
