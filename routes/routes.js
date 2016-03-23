@@ -17,7 +17,7 @@ module.exports = {
 			handler: controller.main('user')
 		})
 		server.route({
-			method: 'GET',
+			method: ['GET', 'POST'],
 			path: '/upload',
 			handler: controller.main('upload')
 		})

@@ -1,0 +1,8 @@
+<h2>Start Uploading</h2><br>
+This will initiate the download of a torrent to the server. Right now it is not possible under windows to seed as a user and the server downloading the file through WebRTC. Later this will be possible. Right now you should just enter a magnet URL from the bittorrent network, which the server will then proceed to download. In later versions, that magnetURL will be replaced with the automatically generated magnet link of the user.
+
+<form>
+	<label for="torrentId">Upload from a magnet link</label>
+	<input name="torrentId", placeholder="magnet:">
+	<button onclick="return onSubmit(event)">Upload</button>
+</form>
