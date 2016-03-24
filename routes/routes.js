@@ -24,9 +24,7 @@ module.exports = {
 		server.route({
 			method: 'POST',
 			path: '/upload',
-			handler: function (request, reply) {
-				reply(console.log('BAAAH'), request.payload.id)
-			}
+			handler: controller.main('uploaded')
 		})
 	}
 }

@@ -7,9 +7,8 @@ module.exports = {
 		var exists = fs.existsSync(file)
 		var db = new sqlite3.Database(file)
 		
-
-		reply (template.filled('upload', {}))
-
+		console.log('Wowzie, someone talked to me!', request.payload.torrentId)
+		reply('upload started: '+ request.payload.torrentId)
 		
 		
 		/*db.serialize(function() {
