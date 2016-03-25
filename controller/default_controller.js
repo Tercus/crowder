@@ -4,17 +4,15 @@ module.exports = {
 		const sqlite3 = require("sqlite3").verbose()
 		const template = require('../template.js')
 		var file = "test.db"
-		var exists = fs.existsSync(file)
 		var db = new sqlite3.Database(file)
 		
-		
-		if(!exists) {
-			console.log('Oops, database is missing');
-		}
-		db.all("SELECT rowid AS id, thing FROM Stuff", function (err,rows) {
-			var data = { data: rows }
-			reply (template.filled('default', data))
-		});
+		db.serialize(function() {
+			db.run("CREATE TABLE if not exists videos (VID INT, UID INT, title TEXT, desc TEXT, date INT, magnet TEXT)")
+			db.all("SELECT * FROM videos", function (err,rows) {
+				var data = { data: rows }
+				reply (template.filled('default', data))
+			});
+		})
 		db.close();
     }
 	

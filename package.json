@@ -9,9 +9,7 @@
   "author": "Terces",
   "license": "ISC",
   "dependencies": {
-    "drag-drop": "^2.11.0",
     "hapi": "^13.2.1",
-    "jade": "^1.11.0",
     "mustache": "^2.2.1",
     "nodemon": "^1.9.1",
     "sqlite3": "^3.1.1",
