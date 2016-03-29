@@ -1,7 +1,21 @@
-<p>Go <a href="http://localhost:3000/upload">here</a> to upload videos</p><br>
+
+<html>
+<head>
+	Crowder - Select your video
+</head>
+<body>
+<div>Go <a href="http://localhost:3000/upload">here</a> to upload videos</div><br>
 
 {{#data}}
-Video ID: {{VID}} - <b>Title:</b> <u>{{title}}</u> - uploaded by: {{UID}}<br>
-{{desc}}<br>
-<a href="{{magnet}}">Start Download</a><br>
+	<a href="http://localhost:3000/watch/{{vidID}}">
+		<div>
+			Video ID: {{vidID}} - <b>Title:</b> <u>{{title}}</u> - uploaded by: {{UID}}<br>
+			{{desc}}<br>
+			<a href="{{magnet}}">Download using bittorrent</a><br>
+		</div>
+	</a>
+	<br>
 {{/data}}
+
+</body>
+</html>

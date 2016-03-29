@@ -7,13 +7,14 @@ module.exports = {
 		var db = new sqlite3.Database(file)
 		
 		db.serialize(function() {
-			db.run("CREATE TABLE if not exists videos (VID INT, UID INT, title TEXT, desc TEXT, date INT, magnet TEXT)")
-			db.all("SELECT * FROM videos", function (err,rows) {
+			db.run("CREATE TABLE if not exists videos (UID INT, title TEXT, desc TEXT, date INT, magnet TEXT)")
+			db.all("SELECT rowid AS vidID, * FROM videos", function (err,rows) {
 				var data = { data: rows }
+				//console.log('Data:', data)
 				reply (template.filled('default', data))
-			});
+			})
 		})
-		db.close();
+		db.close()
     }
 	
 }

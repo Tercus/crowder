@@ -9,8 +9,8 @@ module.exports = {
 		
 		console.log('Wowzie, someone talked to me!', request.payload.magnet)
 		db.serialize(function() {
-			db.run("CREATE TABLE if not exists videos (VID INT, UID INT, title TEXT, desc TEXT, date INT, magnet TEXT)")
-			db.all("INSERT INTO videos VALUES ('','','" + request.payload.title + "','" + request.payload.desc + "','','" + request.payload.magnet + "')")
+			db.run("CREATE TABLE if not exists videos (UID INT, title TEXT, desc TEXT, date INT, magnet TEXT)")
+			db.all("INSERT INTO videos VALUES ('','" + request.payload.title + "','" + request.payload.desc + "','','" + request.payload.magnet + "')")
 		})
 		db.close()
 		
@@ -35,7 +35,6 @@ module.exports = {
 		client.on('torrent', function (torrent) {
 			torrent.on('done', function () {
 				console.log('done downloading.')
-				reply('Server is now downloading and seeding: ' + request.payload.title + '. You may view it back on the <a href=http://localhost:3000>website</a>.')
 			})
 			torrent.on('download', function(chunkSize){
 				console.log('chunk size: ' + chunkSize);
@@ -44,6 +43,7 @@ module.exports = {
 				console.log('progress: ' + torrent.progress);
 				console.log('======');
 			})
+			reply('Server is now downloading and will be seeding: ' + request.payload.title + '.<br>You may go back to the <a href=http://localhost:3000>website</a>.')
 		})
     }
 }

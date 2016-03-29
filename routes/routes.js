@@ -8,7 +8,7 @@ module.exports = {
 		})
 		server.route({
 			method: 'GET',
-			path: '/watch/{video}',
+			path: '/watch/{video?}',
 			handler: controller.main('video')
 		})
 		server.route({
