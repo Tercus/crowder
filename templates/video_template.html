@@ -1,16 +1,22 @@
 <!doctype html>
 <html>
+<head>
+<style>
+.title {
+    font-size: 200%;
+}
+</style>
+</head>
   <body>
 
-	<a href="http://localhost:3000/">Home</a><br><br><br>
-	<div>
-		Video ID: {{vidID}} - <b>Title:</b> <u>{{title}}</u> - uploaded by: {{UID}}<br>
-		{{desc}}<br>
-		{{magnet}}
-	</div>
-    
+	<a href="http://localhost:3000/">Home</a><br><br>
+	<div class="title">{{title}}</div>
+	<hr>
+	{{desc}}<br>
+	{{magnet}}<br>
+	ID: {{vidID}} User: {{UID}}
+	<hr>
 	
-    <h2>Video:</h2>
 	<div id="progress"> </div>
     <div class="output"></div>
 

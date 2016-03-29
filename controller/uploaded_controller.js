@@ -8,10 +8,7 @@ module.exports = {
 		var db = new sqlite3.Database(file)
 		
 		console.log('Wowzie, someone talked to me!', request.payload.magnet)
-		db.serialize(function() {
-			db.run("CREATE TABLE if not exists videos (UID INT, title TEXT, desc TEXT, date INT, magnet TEXT)")
-			db.all("INSERT INTO videos VALUES ('','" + request.payload.title + "','" + request.payload.desc + "','','" + request.payload.magnet + "')")
-		})
+		db.all("INSERT INTO videos VALUES ('','" + request.payload.title + "','" + request.payload.desc + "','','" + request.payload.magnet + "')")
 		db.close()
 		
 		//client.add(request.payload.magnet, function (torrent) {
