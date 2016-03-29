@@ -8,9 +8,11 @@
 		{{desc}}<br>
 		{{magnet}}
 	</div>
-
-    <h2>Log</h2>
-    <div class="log"></div>
+    
+	
+    <h2>Video:</h2>
+	<div id="progress"> </div>
+    <div class="output"></div>
 
     <!-- Include the latest version of WebTorrent -->
     <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
@@ -20,7 +22,6 @@
 	var torrentId = '{{{magnet}}}'
 	
 	window.onload = function() {
-        log('Adding ' + torrentId)
         client.add(torrentId, onTorrent)
 	}
 
@@ -29,40 +30,37 @@
     })
 
     function onTorrent (torrent) {
-        log('Got torrent metadata!')
-        log(
-          'Torrent info hash: ' + torrent.infoHash + ' ' +
-          '<a href="' + torrent.magnetURI + '" target="_blank">[Magnet URI]</a> ' +
-          '<a href="' + torrent.torrentFileBlobURL + '" target="_blank" download="' + torrent.name + '.torrent">[Download .torrent]</a>'
-        )
+        console.log('Got torrent metadata!')
+        console.log('Torrent info hash: ' + torrent.infoHash)
 
         // Print out progress every 5 seconds
         var interval = setInterval(function () {
-          log('Progress: ' + (torrent.progress * 100).toFixed(1) + '%')
+			var p = document.createElement('p')
+			p.innerHTML = 'Progress: ' + (torrent.progress * 100).toFixed(1) + '%'
+			var item = document.getElementById("progress").childNodes[0]
+			document.querySelector('#progress').replaceChild(p, item)
         }, 5000)
 
+		//Stop timer when the torrent is fully downloaded
         torrent.on('done', function () {
-          log('Progress: 100%')
-          clearInterval(interval)
+			clearInterval(interval)
         })
 
         // Render all files into to the page
         torrent.files.forEach(function (file) {
-          file.appendTo('.log')
-          log('(Blob URLs only work if the file is loaded from a server. "http//localhost" works. "file://" does not.)')
-          file.getBlobURL(function (err, url) {
-            if (err) return log(err.message)
-            log('File done.')
-            log('<a href="' + url + '">Download full file: ' + file.name + '</a>')
-          })
+			file.appendTo('.output')
+			file.getBlobURL(function (err, url) {
+			if (err) return output(err.message)
+				output('<a href="' + url + '">Download full file: ' + file.name + '</a>')
+			})
         })
-      }
+    }
 
-      function log (str) {
-        var p = document.createElement('p')
-        p.innerHTML = str
-        document.querySelector('.log').appendChild(p)
-      }
+    function output (str) {
+		var p = document.createElement('p')
+		p.innerHTML = str
+		document.querySelector('.output').appendChild(p)
+	}
     </script>
   </body>
 </html>
