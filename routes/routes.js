@@ -13,18 +13,13 @@ module.exports = {
 		})
 		server.route({
 			method: 'GET',
-			path: '/visit/{user}',
+			path: '/visit/{user?}',
 			handler: controller.main('user')
 		})
 		server.route({
-			method: 'GET',
+			method: ['GET','POST'],
 			path: '/upload',
 			handler: controller.main('upload')
-		})
-		server.route({
-			method: 'POST',
-			path: '/upload',
-			handler: controller.main('uploaded')
 		})
 	}
 }
