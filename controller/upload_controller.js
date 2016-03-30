@@ -7,7 +7,7 @@ module.exports = {
 		var client = new WebTorrent()
 		var file = 'test.db'
 		var db = new sqlite3.Database(file)
-		
+		var parseTorrent = require('parse-torrent')
 		
 		if(request.method == 'get') {
 			reply (template.filled('upload', {}))
@@ -16,35 +16,41 @@ module.exports = {
 			db.all("INSERT INTO videos VALUES ('','" + request.payload.title + "','" + request.payload.desc + "','','" + request.payload.magnet + "')")
 			db.close()
 			
-			client.add(request.payload.magnet, function (torrent) {
-				torrent.files.forEach(function (file) {
-					console.log('Started saving ' + file.name)
-					file.getBuffer(function (err, buffer) {
-						if (err) {
-							console.error('Error downloading ' + file.name)
-							return
-						}
-						fs.writeFile(file.name, buffer, function (err) {
+			
+			parseTorrent.remote(request.payload.magnet, function (err, parsedTorrent) {
+				if (err) {
+					console.log('Parsing torrent failed: ' + err)
+				}
+				client.add(request.payload.magnet, { path: './storage/' + parsedTorrent.infoHash + '/' }, function (torrent) {
+					torrent.files.forEach(function (file) {
+						console.log('Started saving ' + file.name)
+						file.getBuffer(function (err, buffer) {
 							if (err) {
-								console.error('Error saving ' + file.name)
+								console.error('Error downloading ' + file.name)
 								return
 							}
+							fs.writeFile(file.name, buffer, function (err) {
+								if (err) {
+									console.error('Error saving ' + file.name)
+									return
+								}
+							})
 						})
 					})
 				})
-			})
-			client.on('torrent', function (torrent) {
-				torrent.on('done', function () {
-					console.log('done downloading.')
+				client.on('torrent', function (torrent) {
+					torrent.on('done', function () {
+						console.log('done downloading.')
+					})
+					torrent.on('download', function(chunkSize){
+						//console.log('chunk size: ' + chunkSize);
+						//console.log('total downloaded: ' + torrent.downloaded);
+						//console.log('download speed: ' + torrent.downloadSpeed);
+						console.log('progress: ' + torrent.progress);
+						//console.log('======');
+					})
+					reply(template.filled('upload', {title: request.payload.title}))
 				})
-				torrent.on('download', function(chunkSize){
-					console.log('chunk size: ' + chunkSize);
-					console.log('total downloaded: ' + torrent.downloaded);
-					console.log('download speed: ' + torrent.downloadSpeed);
-					console.log('progress: ' + torrent.progress);
-					console.log('======');
-				})
-				reply(template.filled('upload', {title: request.payload.title}))
 			})
 		}
     }

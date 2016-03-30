@@ -9,6 +9,7 @@
   "author": "Terces",
   "license": "ISC",
   "dependencies": {
+    "bittorrent-tracker": "^7.7.0",
     "hapi": "^13.2.1",
     "mustache": "^2.2.1",
     "nodemon": "^1.9.1",
