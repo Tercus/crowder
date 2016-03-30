@@ -1,20 +1,43 @@
-
 <html>
-<head>
-	Crowder - Select your video
-</head>
+<style>
+div {
+    margin: auto;
+	text-align: center;
+	padding: 2px;
+}
+a:link, a:visited {
+    color: white;
+    padding: 5px;
+    text-align: center;	
+    text-decoration: none;
+    display: inline-block;
+	width: 600px;
+	background-color: 336600;
+}
+
+a.upload:link, a.upload:visited {
+	background-color: 0000CC;
+}
+
+a.upload:hover, a.upload:active {
+	background-color: 0000EE;
+}
+
+a:hover, a:active {
+    background-color: 448800;
+}
+</style>
 <body>
-<div>Go <a href="http://localhost:3000/upload">here</a> to upload videos</div><br>
+
+<div><a href="http://localhost:3000/upload" class="upload">Upload</a></div><br>
 
 {{#data}}
-	<a href="http://localhost:3000/watch/{{vidID}}">
 		<div>
-			Video ID: {{vidID}} - <b>Title:</b> <u>{{title}}</u> - uploaded by: {{UID}}<br>
-			{{desc}}<br>
-			<a href="{{magnet}}">Download using bittorrent</a><br>
+			<a href="http://localhost:3000/watch/{{vidID}}">
+				Video ID: {{vidID}} - <b>Title:</b> <u>{{title}}</u> - uploaded by: {{UID}}<br>
+				{{desc}}
+			</a>
 		</div>
-	</a>
-	<br>
 {{/data}}
 
 </body>

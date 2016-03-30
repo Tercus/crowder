@@ -12,6 +12,9 @@ var db = new sqlite3.Database(file)
 db.run("CREATE TABLE if not exists videos (UID INT, title TEXT, desc TEXT, date INT, magnet TEXT)")
 db.close()
 
+//Initialize the seeding of the files
+
+
 //Initialize server and set port
 const server = new hapi.Server()
 server.connection({ port: 3000 })

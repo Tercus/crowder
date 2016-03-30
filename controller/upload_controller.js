@@ -12,11 +12,10 @@ module.exports = {
 		if(request.method == 'get') {
 			reply (template.filled('upload', {}))
 		} else {
-			console.log('Wowzie, someone talked to me!', request.payload.magnet)
+			console.log('Torrent to download:', request.payload.magnet)
 			db.all("INSERT INTO videos VALUES ('','" + request.payload.title + "','" + request.payload.desc + "','','" + request.payload.magnet + "')")
 			db.close()
 			
-			//client.add(request.payload.magnet, function (torrent) {
 			client.add(request.payload.magnet, function (torrent) {
 				torrent.files.forEach(function (file) {
 					console.log('Started saving ' + file.name)
@@ -45,7 +44,7 @@ module.exports = {
 					console.log('progress: ' + torrent.progress);
 					console.log('======');
 				})
-				reply('Server is now downloading and will be seeding: ' + request.payload.title + '.<br>You may go back to the <a href=http://localhost:3000>website</a>.')
+				reply(template.filled('upload', {title: request.payload.title}))
 			})
 		}
     }
