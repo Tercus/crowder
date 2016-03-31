@@ -17,6 +17,12 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Media files
+*.mp4
+
+# Databases
+*.db
+
 # =========================
 # Operating System Files
 # =========================
