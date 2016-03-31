@@ -42,12 +42,6 @@ module.exports = {
 				client.on('torrent', function (torrent) {
 					torrent.on('done', function () {
 						console.log('done downloading.')
-						var tf = []
-						torrent.files.forEach(function(file){
-							tf.push(file.name)
-						})
-						var test = './storage/' + parsedTorrent.infoHash + '/'
-						client.seed(test, { announceList: ['localhost:3001'] }, function onseed (torrent) { console.log('seeding') })
 					})
 					torrent.on('download', function(chunkSize){
 						console.log('progress: ' + torrent.progress);
