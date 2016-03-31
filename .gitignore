@@ -20,6 +20,9 @@ $RECYCLE.BIN/
 # Media files
 *.mp4
 
+# Databases
+*.db
+
 # =========================
 # Operating System Files
 # =========================
@@ -48,4 +51,3 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-*.db
