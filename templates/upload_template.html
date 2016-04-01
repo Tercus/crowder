@@ -1,19 +1,35 @@
 {{^title}}
 <h2>Start Uploading</h2>
-<p>This will initiate the download of a torrent to the server. Right now it is not possible under windows to seed as a user and the server downloading the file through WebRTC. Later this will be possible. Right now you should just enter a magnet URL from the bittorrent network, which the server will then proceed to download. In later versions, that magnetURL will be replaced with the automatically generated magnet link of the user.</p>
-<p>
-<form method='post' action='http://localhost:3000/upload'>
-	<label for="title">Title:</label><br>
-	<input name="title", placeholder="Title"><br>
-	<label for="desc">Description:</label><br>
-	<textarea name="desc", placeholder="Description" rows="5"></textarea><br>
-	<label for="magnet">MagnetLink:</label><br>
-	<input name="magnet", placeholder="magnet:..."><br>
-	<button type="submit">Upload</button> <a href="http://localhost:3000/">Cancel</a>
+<form action='' method='POST' enctype='multipart/form-data'>
+    <input type='file' name='files' multiple><br>
+    <input type='submit' name='upload_btn' value='upload'>
 </form>
-</p>
 {{/title}}
 
 {{#title}}
 Server is now downloading and will be seeding: {{title}}.<br>You may go back to the <a href=http://localhost:3000>website</a>.
 {{/title}}
+
+
+<script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
+<script>
+var client = new WebTorrent()
+
+client.on('error', function (err) {
+	console.error('ERROR: ' + err.message)
+})
+
+document.querySelector('form').addEventListener('submit', function (e) {
+	e.preventDefault() // Prevent page refresh
+	var files = document.querySelector('form input[name=files]').value
+	console.log('Adding ' + files)
+	//client.seed(files, onTorrent)
+})
+
+function onTorrent (torrent) {
+	torrent.on('done', function () {
+		console.log('Progress: 100%')
+		clearInterval(interval)
+	})
+}
+</script>
