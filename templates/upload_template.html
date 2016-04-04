@@ -1,7 +1,7 @@
 {{^title}}
 <h2>Start Uploading</h2>
-<form action='' method='POST' enctype='multipart/form-data'>
-    <input type='file' name='files' multiple><br>
+<form action='' method='POST' enctype='multipart/form-data' name="uploadfile">
+    <input type='file' name='file' id="fileupload" multiple><br>
     <input type='submit' name='upload_btn' value='upload'>
 </form>
 {{/title}}
@@ -15,21 +15,25 @@ Server is now downloading and will be seeding: {{title}}.<br>You may go back to 
 <script>
 var client = new WebTorrent()
 
-client.on('error', function (err) {
+client.on('error', (err) => {
 	console.error('ERROR: ' + err.message)
 })
 
 document.querySelector('form').addEventListener('submit', function (e) {
 	e.preventDefault() // Prevent page refresh
-	var files = document.querySelector('form input[name=files]').value
-	console.log('Adding ' + files)
-	//client.seed(files, onTorrent)
+	
+	var selectedFiles = document.querySelector('form input[name=file]').files
+	var fto = []
+	for (var i = 0; i < selectedFiles.length; i++) {
+		fto.push(selectedFiles.item(i))
+	}
+	console.log('Adding: ' + fto)
+	client.seed(fto, { announceList: [['https://localhost:3001/announce']] }, onTorrent)
 })
 
 function onTorrent (torrent) {
-	torrent.on('done', function () {
-		console.log('Progress: 100%')
-		clearInterval(interval)
-	})
+	//Does it create an infoHash? Is that a viable way to check if it DID create a torrent?
+	console.log(torrent.infoHash)
+	console.log(torrent.files)
 }
 </script>

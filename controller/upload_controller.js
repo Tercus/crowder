@@ -3,7 +3,7 @@
 module.exports = {
 	load: function (request, reply) {
 		const template = require('../template.js')
-		const WebTorrent = require('webtorrent-hybrid')
+		const WebTorrent = require('webtorrent')
 		const fs = require('fs')
 		const sqlite3 = require('sqlite3').verbose()
 		var client = new WebTorrent()
