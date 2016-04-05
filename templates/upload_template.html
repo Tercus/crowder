@@ -41,15 +41,12 @@ document.querySelector('form').addEventListener('submit', function (e) {
 	client.seed(fto, { announceList: [['ws://localhost:8080']] }, onTorrent)
 })
 
-client.on('torrent', function (torrent) {
-	xhttp.open('POST', 'http://localhost/upload', true)
-	xhttp.send(torrent.infoHash)
-})
-
 function onTorrent (torrent) {
 	//Does it create an infoHash? Is that a viable way to check if it DID create a torrent?
 	console.log(torrent.infoHash)
 	console.log(torrent.files)
+	xhttp.open('POST', 'http://localhost/upload', true)
+	xhttp.send(torrent.infoHash)
 }
 
 </script>

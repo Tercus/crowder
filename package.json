@@ -1,10 +1,10 @@
 {
-  "name": "myown",
+  "name": "crowder",
   "version": "1.0.0",
   "description": "just testing",
   "main": "index.js",
   "scripts": {
-    "test": "set DEBUG=*,-not_this && nodemon server.js"
+    "test": "set DEBUG=*,-not_this && node server.js"
   },
   "author": "Terces",
   "license": "ISC",
