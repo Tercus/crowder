@@ -4,7 +4,6 @@ const hserver = new hapi.Server()
 const routes = require('./routes/routes.js')
 const fs = require('fs')
 const sqlite3 = require("sqlite3").verbose()
-const btserver = require('bittorrent-tracker').Server
 
 //Initialize the database and create it if it doesn't exist already. That way the other parts don't have to
 var file = "test.db"

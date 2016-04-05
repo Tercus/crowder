@@ -1,9 +1,11 @@
 {{^title}}
 <h2>Start Uploading</h2>
-<form action='' method='POST' enctype='multipart/form-data' name="uploadfile">
+<form action='http://localhost/upload' method='POST' enctype='multipart/form-data' name="uploadfile">
     <input type='file' name='file' id="fileupload" multiple><br>
     <input type='submit' name='upload_btn' value='upload'>
 </form>
+
+<div id="progress"> </div>
 {{/title}}
 
 {{#title}}
@@ -14,6 +16,14 @@ Server is now downloading and will be seeding: {{title}}.<br>You may go back to 
 <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
 <script>
 var client = new WebTorrent()
+var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
 
 client.on('error', (err) => {
 	console.error('ERROR: ' + err.message)
@@ -28,7 +38,12 @@ document.querySelector('form').addEventListener('submit', function (e) {
 		fto.push(selectedFiles.item(i))
 	}
 	console.log('Adding: ' + fto)
-	client.seed(fto, { announceList: [['https://localhost:3001/announce']] }, onTorrent)
+	client.seed(fto, { announceList: [['ws://localhost:8080']] }, onTorrent)
+})
+
+client.on('torrent', function (torrent) {
+	xhttp.open('POST', 'http://localhost/upload', true)
+	xhttp.send(torrent.infoHash)
 })
 
 function onTorrent (torrent) {
@@ -36,4 +51,5 @@ function onTorrent (torrent) {
 	console.log(torrent.infoHash)
 	console.log(torrent.files)
 }
+
 </script>
