@@ -11,6 +11,7 @@ module.exports = {
 		var db = new sqlite3.Database(file)
 		var parseTorrent = require('parse-torrent')
 		
+		console.log(request.method)
 		if(request.method === 'get') {
 			reply (template.filled('upload', {}))
 		} else {
@@ -37,6 +38,9 @@ module.exports = {
 						})
 					})
 				})
+			})
+			client.on('torrent', function (torrent) {
+				console.log('BAH, torrent')
 			})
 		}
     }
