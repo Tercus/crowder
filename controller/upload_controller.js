@@ -3,28 +3,23 @@
 module.exports = {
 	load: function (request, reply) {
 		const template = require('../template.js')
-		const WebTorrent = require('webtorrent-hybrid')
+		const WebTorrent = require('webtorrent')
 		const fs = require('fs')
-		const sqlite3 = require('sqlite3').verbose()
 		var client = new WebTorrent()
-		var file = 'test.db'
-		var db = new sqlite3.Database(file)
-		var parseTorrent = require('parse-torrent')
 		
 		console.log(request.method)
 		if(request.method === 'get') {
+			//just show the upload form
 			reply (template.filled('upload', {}))
 		} else {
-			var download = request.payload
-			console.log('infoHash of torrent to download: ' + download)
+			//start downloading the file
+			var download = decodeURIComponent(request.payload)
+			console.log('infoHash of torrent to download: ' + download2)
 			var opts = {
 				path: './storage/' + download + '/',
-				announce: ['ws://localhost:8080']
+				announce: ['http://localhost:8080', 'udp://localhost:8080']
 				}
-			//var magnet = parseTorrent.toMagnetURI({ infoHash: download, announce: ['ws://localhost:8080'] })
-			//console.log(decodeURIComponent(magnet))
-			//client.add(magnet, function (torrent) {
-			client.add(download, opts, function (torrent) {
+			client.add(download, function (torrent) {
 				console.log('added torrent')
 				torrent.files.forEach(function (file) {
 					console.log('Started saving ' + file.name)
