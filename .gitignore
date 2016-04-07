@@ -23,6 +23,9 @@ $RECYCLE.BIN/
 # Databases
 *.db
 
+# Node.js Module folder
+node_modules/
+
 # =========================
 # Operating System Files
 # =========================
