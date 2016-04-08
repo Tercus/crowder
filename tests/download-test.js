@@ -4,10 +4,12 @@ var fs = require('fs')
 
 var sintel = 'https://webtorrent.io/torrents/sintel.torrent'
 var magnet = 'magnet:?xt=urn:btih:c3ac6be00f67c88118c71e4971d12c793b99b954&dn=LtUxcQ1.jpg&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.io'
-var torrentfile = './LtUxcQ1.torrent'
+magnet2 = decodeURIComponent(magnet)
+var testHash = 'c3ac6be00f67c88118c71e4971d12c793b99b954'
+var torrentfile1 = './LtUxcQ1.torrent'
+var torrentfile2 = './sintel.torrent'
 
-
-var download = magnet
+var download = magnet2
 console.log('download: ' + download)
 var torrent = client.add(download, { path: './download/' })
 addTorrentEvents(torrent)
