@@ -10,9 +10,9 @@ From the Browser, users can select files they wish to upload. The website then m
 
 ## What is working
 
--[X] Select files from browser
--[X] Seed selected files to tracker
--[X] Server downloading seeded files
--[] Server seeding files, once download is complete
--[] Website showing a list of uploaded files
+- [X] Select files from browser
+- [X] Seed selected files to tracker
+- [X] Server downloading seeded files
+- [] Server seeding files, once download is complete
+- [] Website showing a list of uploaded files
 
