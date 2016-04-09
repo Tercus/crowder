@@ -16,7 +16,6 @@ module.exports = {
 		} else {
 			//start downloading the file
 			var download = request.payload
-			console.log('infoHash of torrent to download: ' + download)
 			var opts = {
 				path: './storage/' + download + '/',
 				announce: ['http://localhost:8080', 'udp://localhost:8080', 'ws://localhost:8080', 'wss://localhost:8080']
