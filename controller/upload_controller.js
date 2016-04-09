@@ -3,9 +3,11 @@
 module.exports = {
 	load: function (request, reply) {
 		const template = require('../template.js')
-		const WebTorrent = require('webtorrent')
+		const WebTorrent = require('webtorrent-hybrid')
 		const fs = require('fs')
 		var client = new WebTorrent()
+		
+		var util = require("util")
 		
 		console.log(request.method)
 		if(request.method === 'get') {
@@ -13,30 +15,23 @@ module.exports = {
 			reply (template.filled('upload', {}))
 		} else {
 			//start downloading the file
-			var download = decodeURIComponent(request.payload)
-			console.log('infoHash of torrent to download: ' + download2)
+			var download = request.payload
+			console.log('infoHash of torrent to download: ' + download)
 			var opts = {
 				path: './storage/' + download + '/',
-				announce: ['http://localhost:8080', 'udp://localhost:8080']
+				announce: ['http://localhost:8080', 'udp://localhost:8080', 'ws://localhost:8080', 'wss://localhost:8080']
 				}
-			client.add(download, function (torrent) {
+			client.add(download, opts, function (torrent) {
 				console.log('added torrent')
-				torrent.files.forEach(function (file) {
-					console.log('Started saving ' + file.name)
-					file.getBuffer(function (err, buffer) {
-						if (err) {
-							console.error('Error downloading ' + file.name)
-							return
-						}
-							fs.writeFile(file.name, buffer, function (err) {
-							console.error('Error saving ' + file.name)
-						})
-					})
+				torrent.on('done', function() {
+					console.log('Torrent downloaded')
+					savetorrent(download)
 				})
 			})
-			client.on('torrent', function (torrent) {
-				console.log('BAH, torrent')
-			})
+		}
+		
+		function savetorrent (download) {
+			console.log('Gotta save this: ' + download)
 		}
     }
 }

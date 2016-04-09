@@ -5,6 +5,10 @@ const routes = require('./routes/routes.js')
 const fs = require('fs')
 const sqlite3 = require("sqlite3").verbose()
 
+//Catch electron output in virtual screen
+var Xvfb = require('xvfb')
+var xvfb = new Xvfb()
+xvfb.startSync()
 
 //Initialize the database and create it if it doesn't exist already. That way the other parts don't have to
 var file = "test.db"

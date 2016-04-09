@@ -2,7 +2,7 @@
 <h2>Start Uploading</h2>
 <form action='http://localhost/upload' method='POST' enctype='multipart/form-data' name="uploadfile">
     <input type='file' name='file' id="fileupload" multiple><br>
-    <input type='submit' name='upload_btn' value='upload'>
+    <input type='submit' name='upload_btn' value='upload'> <a href="http://localhost/">Cancel</a>
 </form>
 
 <div id="progress"> </div>
@@ -31,14 +31,10 @@ document.querySelector('form').addEventListener('submit', function (e) {
 		fto.push(selectedFiles.item(i))
 	}
 	console.log('Adding: ' + fto)
-	//client.seed(fto, { announceList: [['http://localhost:8080'], ['udp://localhost:8080']] }, onTorrent)
-	client.seed(fto, onTorrent)
+	client.seed(fto, { announceList: [['http://localhost:8080'], ['udp://localhost:8080'], ['ws://localhost:8080'], ['wss://localhost:8080']] }, onTorrent)
 })
 
 function onTorrent (torrent) {
-	//Does it create an infoHash? Is that a viable way to check if it DID create a torrent?
-	console.log(torrent.infoHash)
-	console.log(torrent.files)
 	xhttp.open('POST', 'http://localhost/upload', true)
 	xhttp.send(torrent.infoHash)
 }
