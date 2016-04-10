@@ -6,32 +6,33 @@ module.exports = {
 		const WebTorrent = require('webtorrent-hybrid')
 		const fs = require('fs')
 		var client = new WebTorrent()
-		
-		var util = require("util")
+		const sqlite3 = require("sqlite3").verbose()
+ 		var file = 'test.db'
+ 		var db = new sqlite3.Database(file)		
 		
 		console.log(request.method)
 		if(request.method === 'get') {
 			//just show the upload form
 			reply (template.filled('upload', {}))
 		} else {
-			//start downloading the file
+			//TODO: add check if torrent has already been added by another user
+			//		so, check for the infoHash in the database and return error
 			var download = request.payload
 			var opts = {
 				path: './storage/' + download + '/',
-				announce: ['http://localhost:8080', 'udp://localhost:8080', 'ws://localhost:8080', 'wss://localhost:8080']
+				announce: ['http://localhost:8080', 'udp://localhost:8080', 'ws://localhost:8080']
 				}
 			client.add(download, opts, function (torrent) {
 				console.log('added torrent')
-				torrent.on('done', function() {
+				torrent.on('download', function (chunkSize) {
+					console.log('progress: ' + (torrent.progress * 100).toFixed(2) + '%')
+				})
+				torrent.on('done', function (torrent) {
 					console.log('Torrent downloaded')
-					savetorrent(download)
+					db.all("INSERT INTO videos VALUES ('" + download + "', '','Test','test desc','')")
+					db.close()
 				})
 			})
 		}
-		
-		function savetorrent (download) {
-			console.log('Gotta save this: ' + download)
-		}
     }
-    //Testing things
 }

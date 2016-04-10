@@ -9,12 +9,11 @@
 </head>
   <body>
 
-	<a href="http://localhost:3000/">Home</a><br><br>
+	<a href="http://localhost/">Home</a><br><br>
 	<div class="title">{{title}}</div>
 	<hr>
 	{{desc}}<br>
-	{{magnet}}<br>
-	ID: {{vidID}} User: {{UID}}
+	ID: {{infoHash}} User: {{UID}}
 	<hr>
 	
 	<div id="progress"> </div>
@@ -25,10 +24,10 @@
 
     <script>
 	var client = new WebTorrent()
-	var torrentId = '{{{magnet}}}'
+	var torrentId = '{{{infoHash}}}'
 	
 	window.onload = function() {
-        client.add(torrentId, onTorrent)
+        client.add(torrentId, { announce: ['http://localhost:8080', 'udp://localhost:8080', 'ws://localhost:8080'] }, onTorrent)
 	}
 
     client.on('error', function (err) {

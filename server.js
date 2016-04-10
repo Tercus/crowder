@@ -13,7 +13,7 @@ xvfb.startSync()
 //Initialize the database and create it if it doesn't exist already. That way the other parts don't have to
 var file = "test.db"
 var db = new sqlite3.Database(file)
-db.run("CREATE TABLE if not exists videos (UID INT, title TEXT, desc TEXT, date INT, magnet TEXT)")
+db.run("CREATE TABLE if not exists videos (infoHash TEXT, UID INT, title TEXT, desc TEXT, date INT)")
 db.close()
 
 //Initialize hapi-server and set port

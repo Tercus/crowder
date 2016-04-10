@@ -5,9 +5,9 @@ module.exports = {
 		const template = require('../template.js')
 		var file = "test.db"
 		var db = new sqlite3.Database(file)
-		var videoID = encodeURIComponent(request.params.video)
 		
-		db.all("SELECT rowid AS vidID, * FROM videos WHERE vidID=" + videoID, function (err, row){
+		db.all("SELECT * FROM videos WHERE infoHash='" + request.params.video + "'", function (err, row){
+			if (err) console.log('Error: ' + err)
 			reply (template.filled('video', row[0]))
 		})
 		db.close()
