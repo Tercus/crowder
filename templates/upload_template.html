@@ -1,9 +1,11 @@
 {{^title}}
 <h2>Start Uploading</h2>
 <form action='http://localhost/upload' method='POST' enctype='multipart/form-data' name="uploadfile">
-    <input type='file' name='file' id="fileupload" multiple><br>
-    <input type='submit' name='upload_btn' value='upload'> <a href="http://localhost/">Cancel</a>
+  <input type='file' name='file'><br>
+  <input type='submit' name='upload_btn' value='upload'>
 </form>
+
+<a href="http://localhost/">Cancel</a>
 
 <div id="progress"> </div>
 {{/title}}
@@ -16,27 +18,36 @@ Server is now downloading and will be seeding: {{title}}.<br>You may go back to 
 <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
 <script>
 var client = new WebTorrent()
-var xhttp = new XMLHttpRequest()
 
 client.on('error', (err) => {
 	console.error('ERROR: ' + err.message)
 })
 
-document.querySelector('form').addEventListener('submit', function (e) {
-	e.preventDefault() // Prevent page refresh
-	
-	var selectedFiles = document.querySelector('form input[name=file]').files
-	var fto = []
-	for (var i = 0; i < selectedFiles.length; i++) {
-		fto.push(selectedFiles.item(i))
-	}
-	console.log('Adding: ' + fto)
-	client.seed(fto, { announceList: [['http://localhost:8080'], ['udp://localhost:8080'], ['ws://localhost:8080'], ['wss://localhost:8080']] }, onTorrent)
-})
+//Event listened triggered when user presses submit button
+document.querySelector('form').addEventListener('submit', handlesubmit)
 
-function onTorrent (torrent) {
-	xhttp.open('POST', 'http://localhost/upload', true)
-	xhttp.send(torrent.infoHash)
+//Catch the Event and extract the data from the form that would have been sent
+function handlesubmit (submit) {
+  var formData = new FormData(document.querySelector('form'))
+	startseed(formData)
+	submit.preventDefault() // Prevent page refresh
+}
+
+//Using the data from the form, seed the torrent, or print error
+function startseed (formData) {
+  torrentfile = formData.getAll('file')
+  client.seed(torrentfile, { announceList: [['ws://localhost:8080']] })
+
+  //Once the torrent starts seeding, inform the server to download the torrent
+  client.on('torrent', function (torrent) {
+    //Send a notification to the server to download this file.
+    //TODO: find a better way.
+    console.log('Seeding file')
+    var xhttp = new XMLHttpRequest()
+    xhttp.open('POST', 'http://localhost/upload', true)
+    formData.append('infoHash', torrent.infoHash)
+    xhttp.send(formData)
+  })
 }
 
 </script>
