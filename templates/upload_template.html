@@ -37,18 +37,24 @@ function handlesubmit (submit) {
 
 //Using the data from the form, seed the torrent, or print error
 function startseed (formData) {
+  console.log('1:' + formData)
   torrentfile = formData.getAll('file')
   client.seed(torrentfile, { announceList: [['ws://localhost:8080']] })
+  console.log('2:' + formData)
 
   //Once the torrent starts seeding, inform the server to download the torrent
   client.on('torrent', function (torrent) {
     //Send a notification to the server to download this file.
     //TODO: find a better way.
-    console.log('Seeding file')
+    console.log('3:' + formData)
     var xhttp = new XMLHttpRequest()
     xhttp.open('POST', 'http://localhost/upload', true)
-    formData.append('infoHash', torrent.infoHash)
-    xhttp.send(formData)
+    var sendData = new FormData()
+    sendData.append('title', formData.get('title'))
+    sendData.append('desc', formData.get('desc'))
+    sendData.append('infoHash', torrent.infoHash)
+    xhttp.send(sendData)
+    console.log('Seeding file')
   })
 }
 
