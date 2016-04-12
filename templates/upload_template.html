@@ -1,15 +1,15 @@
 {{^title}}
-<h2>Start Uploading</h2>
-<form action='http://localhost/upload' method='POST' enctype='multipart/form-data' name="uploadfile">
-  <input type='file' name='file'><br>
-  <input type='text' name='title' placeholder="Title"><br>
-  <input type='text' name='desc' placeholder="Description"><br>
-  <input type='submit' name='upload_btn' value='upload'>
-</form>
+<div id="progress">
+  <h2>Start Uploading</h2>
+  <form action='http://localhost/upload' method='POST' enctype='multipart/form-data' name="uploadfile">
+    <input type='file' name='file'><br>
+    <input type='text' name='title' placeholder="Title"><br>
+    <input type='text' name='desc' placeholder="Description"><br>
+    <input type='submit' name='upload_btn' value='upload'>
+  </form>
 
-<a href="http://localhost/">Cancel</a>
-
-<div id="progress"> </div>
+  <a href="http://localhost/">Cancel</a>
+</div>
 {{/title}}
 
 {{#title}}
@@ -54,6 +54,7 @@ function startseed (formData) {
   })
   function handleresponse() {
     console.log(xhttp.responseText)
+    document.getElementById("progress").innerHTML = '<a href="http://localhost/">Upload completed, return to website</a>'
   }
 }
 
