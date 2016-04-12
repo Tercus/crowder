@@ -14,6 +14,6 @@ From the Browser, users can select files they wish to upload. The website then m
 - [X] Seed selected files to tracker
 - [X] Server downloading seeded files
 - [X] Server seeding files, once download is complete
-- [ ] Website showing a list of uploaded files
+- [X] Website showing a list of uploaded files
 - [ ] Website seeding files in DB on startup
 

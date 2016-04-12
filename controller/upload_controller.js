@@ -9,37 +9,8 @@ module.exports = {
  		var file = 'test.db'
  		var db = new sqlite3.Database(file)		
 		
-		if(request.method === 'get') {
-			//just show the upload form
-			reply (template.filled('upload', {}))
-		} else {
-			//TODO: add check if torrent has already been added by another user
-			//		so, check for the infoHash in the database and return error
-      var sendData = request.payload
-      var download = sendData.infoHash
-      console.log(sendData)
-      console.log('Extracted infoHash: ' + download)
-      
-      var opts = {
-				path: './storage/' + download + '/',
-				announce: ['ws://localhost:8080']
-				}
-			client.add(download, opts, (err) => { if (err) console.log('Error: ' + err) })
-      client.on('torrent', function(torrent){
-        console.log('Added torrent: ' + torrent.infoHash)
-        savetodb(torrent)
-        torrent.on('download', function (chunkSize) {
-					console.log('progress: ' + (torrent.progress * 100).toFixed(2) + '%')
-				})
-        //torrent.on('done', savetodb)
-      })
-      //Save the torrent to the database. I can do that early, because I already have all I know.
-      //TODO: Add an option do make the file public before upload is finished
-      function savetodb (torrent) {
-        console.log('Torrent downloaded')
-        db.all("INSERT INTO videos VALUES ('" + download + "', 123,'" + sendData.title + "','" + sendData.desc + "','" + Date.now() + "')")
-        db.close()
-      }
-		}
+		if(request.method === 'POST') reply ('NO')
+    //just show the upload form
+		reply (template.filled('upload', {}))
   }
 }

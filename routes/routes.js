@@ -17,9 +17,14 @@ module.exports = {
 			handler: controller.main('user')
 		})
 		server.route({
-			method: ['GET','POST'],
+			method: 'GET',
 			path: '/upload',
 			handler: controller.main('upload')
+		})
+		server.route({
+			method: 'POST',
+			path: '/upload',
+			handler: controller.main('torrent')
 		})
 	}
 }
