@@ -11,15 +11,15 @@ module.exports = {
 //TODO:
 // - add check if torrent has already been added by another user
 // - add if sent POST request is actually valid. Trust no-one.
-    if(request.method === 'get') return reply ('NO')
+    if(request.method === 'get') return reply ('Wrong request method')
     var sendData = request.payload
 		var opts = {
       path: './storage/' + sendData.infoHash + '/',
       announce: ['ws://localhost:8080']
       }
     client.add(sendData.infoHash, opts)
-    client.on('error', function (err) { console.log(err) })
-    client.on('warning', function (err) { console.log(err) })
+    client.on('error', function (err) { handleerror(err) })
+    client.on('warning', function (err) { handleerror(err) })
     client.on('torrent', function(torrent){
       console.log('Added torrent: ' + torrent.infoHash)
       torrent.on('download', function (chunkSize) {
@@ -37,6 +37,13 @@ module.exports = {
       console.log('Torrent downloaded')
       db.all("INSERT INTO videos VALUES ('" + sendData.infoHash + "', 123,'" + sendData.title + "','" + sendData.desc + "','" + Date.now() + "')")
       db.close()
+    }
+    
+    function handleerror (err) {
+      if(err) {
+        console.log(err)
+        return reply (err)
+    }
     }
 
   }

@@ -10,10 +10,29 @@ var Xvfb = require('xvfb')
 var xvfb = new Xvfb()
 xvfb.startSync()
 
+//darn webtorrent-hybrid needs that window-less mode
+const WebTorrent = require('webtorrent-hybrid')
+var client = new WebTorrent()
+
 //Initialize the database and create it if it doesn't exist already. That way the other parts don't have to
 var file = "test.db"
 var db = new sqlite3.Database(file)
-db.run("CREATE TABLE if not exists videos (infoHash TEXT, UID INT, title TEXT, desc TEXT, date INT)")
+db.serialize(function() {
+  db.run("CREATE TABLE if not exists videos (infoHash TEXT, UID INT, title TEXT, desc TEXT, date INT)")
+  db.all("SELECT infoHash FROM videos", function (err, rows){
+    if(err) console.log(err)
+    var data = rows.map(function(obj) {
+      fs.readdir('./storage/' + obj.infoHash + '/', function(err, files){
+        console.log(files)
+        client.seed('./storage/' + obj.infoHash + '/' + files, { announceList: [['ws://localhost:8080']], announce: [['ws://localhost:8080']] })
+      })      
+      return obj.infoHash
+    })
+    client.on('torrent', function (torrent) {
+      console.log(torrent.infoHash)
+    })
+  })
+})
 db.close()
 
 //Initialize hapi-server and set port

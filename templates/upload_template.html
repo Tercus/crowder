@@ -53,8 +53,14 @@ function startseed (formData) {
     })
   })
   function handleresponse() {
-    console.log(xhttp.responseText)
-    document.getElementById("progress").innerHTML = '<a href="http://localhost/">Upload completed, return to website</a>'
+    if(xhttp.responseText === 'done') {
+      console.log('Server has downloaded the file')
+      document.getElementById("progress").innerHTML = '<a href="http://localhost/">Upload completed, return to website</a>'
+    }
+    else {
+      console.log(xhttp.responseText)
+      document.getElementById("progress").innerHTML = '<a href="http://localhost/upload/">Ooops, seems like there was an error.</a>'
+    }
   }
 }
 
