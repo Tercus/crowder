@@ -23,7 +23,7 @@ var client = new WebTorrent()
 var xhttp = new XMLHttpRequest()
 
 client.on('error', (err) => {
-	console.error('ERROR: ' + err.message)
+  console.error('ERROR: ' + err.message)
 })
 
 //Event listened triggered when user presses submit button
@@ -32,8 +32,8 @@ document.querySelector('form').addEventListener('submit', handlesubmit)
 //Catch the Event and extract the data from the form that would have been sent
 function handlesubmit (submit) {
   var formData = new FormData(document.querySelector('form'))
-	startseed(formData)
-	submit.preventDefault() // Prevent page refresh
+  startseed(formData)
+  submit.preventDefault() // Prevent page refresh
 }
 
 //Using the data from the form, seed the torrent, or print error
@@ -42,7 +42,7 @@ function startseed (formData) {
   client.seed(torrentfile, { announceList: [['ws://localhost:8080']] })
   client.on('torrent', function (torrent) {
     torrent.on('done', function() {
-      xhttp.open('POST', 'http://localhost/upload', true)
+      xhttp.open('POST', 'http://localhost:81/', true)
       xhttp.onreadystatechange = handleresponse
       var sendData = new FormData()
       sendData.append('title', formData.get('title'))
@@ -63,6 +63,4 @@ function startseed (formData) {
     }
   }
 }
-
-
 </script>

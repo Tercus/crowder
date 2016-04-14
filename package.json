@@ -1,7 +1,8 @@
 {
   "name": "crowder",
   "version": "1.0.0",
-  "description": "just testing",
+  "repository": "https://github.com/Tercus/crowder.git",
+  "description": "crowder is a decentralized crowd-sourced open video platform",
   "main": "index.js",
   "scripts": {
     "test": "set DEBUG=*,-not_this && node server.js"
@@ -11,6 +12,7 @@
   "dependencies": {
     "hapi": "^13.2.1",
     "mustache": "^2.2.1",
+    "nes": "^4.2.1",
     "sqlite3": "^3.1.1",
     "webtorrent": "^0.86.1",
     "webtorrent-hybrid": "^1.0.0"

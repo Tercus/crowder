@@ -1,22 +1,22 @@
 'use strict';
 
 module.exports = {
-	load: function (request, reply) {
-		const WebTorrent = require('webtorrent-hybrid')
-		var client = new WebTorrent()
-		const sqlite3 = require("sqlite3").verbose()
- 		var file = 'test.db'
- 		var db = new sqlite3.Database(file)
+  load: function (request, reply) {
+    const WebTorrent = require('webtorrent-hybrid')
+    var client = new WebTorrent()
+    const sqlite3 = require("sqlite3").verbose()
+    var file = 'test.db'
+    var db = new sqlite3.Database(file)
     
 //TODO:
 // - add check if torrent has already been added by another user
 // - add if sent POST request is actually valid. Trust no-one.
     if(request.method === 'get') return reply ('Wrong request method')
     var sendData = request.payload
-		var opts = {
+    var opts = {
       path: './storage/' + sendData.infoHash + '/',
       announce: ['ws://localhost:8080']
-      }
+    }
     client.add(sendData.infoHash, opts)
     client.on('error', function (err) { handleerror(err) })
     client.on('warning', function (err) { handleerror(err) })
@@ -43,7 +43,7 @@ module.exports = {
       if(err) {
         console.log(err)
         return reply (err)
-    }
+      }
     }
 
   }

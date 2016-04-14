@@ -19,53 +19,55 @@
 	<div id="progress"> </div>
   <div class="output"></div>
 
-    <!-- Include the latest version of WebTorrent -->
-    <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
+<!-- Include the latest version of WebTorrent -->
+<script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
 
-    <script>
+<script>
 var client = new WebTorrent()
 var torrentId = '{{{infoHash}}}'
 
 window.onload = function() {
-      client.add(torrentId, { announce: ['ws://localhost:8080'] }, onTorrent)
+  client.add(torrentId, { announce: ['ws://localhost:8080'] }, onTorrent)
 }
 
-  client.on('error', function (err) {
+client.on('error', function (err) {
   console.error('ERROR: ' + err.message)
-  })
+})
 
-  function onTorrent (torrent) {
-      console.log('Got torrent metadata!')
-      console.log('Torrent info hash: ' + torrent.infoHash)
+function onTorrent (torrent) {
+  console.log('Got torrent metadata!')
+  console.log('Torrent info hash: ' + torrent.infoHash)
 
-      // Print out progress every 5 seconds
-      var interval = setInterval(function () {
+// Print out progress every 5 seconds
+  var interval = setInterval(function () {
     var p = document.createElement('p')
     p.innerHTML = 'Progress: ' + (torrent.progress * 100).toFixed(1) + '% - Peers: ' + torrent.numPeers + ' - Speed: ' + Math.floor(torrent.downloadSpeed/1024) + ' kbytes/s'
     var item = document.getElementById("progress").childNodes[0]
     document.querySelector('#progress').replaceChild(p, item)
-      }, 5000)
+  }, 5000)
 
-  //Stop timer when the torrent is fully downloaded
-      torrent.on('done', function () {
+//Stop timer when the torrent is fully downloaded
+  torrent.on('done', function () {
     clearInterval(interval)
-      })
+  })
 
-      // Render all files into to the page
-      torrent.files.forEach(function (file) {
+// Render all files into to the page
+  torrent.files.forEach(function (file) {
     file.appendTo('.output')
     file.getBlobURL(function (err, url) {
     if (err) return output(err.message)
       output('<a href="' + url + '">Download full file: ' + file.name + '</a>')
     })
-      })
-  }
+  })
+}
 
-  function output (str) {
+function output (str) {
   var p = document.createElement('p')
   p.innerHTML = str
   document.querySelector('.output').appendChild(p)
 }
-    </script>
-  </body>
+</script>
+
+
+</body>
 </html>
