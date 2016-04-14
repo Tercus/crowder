@@ -1,5 +1,6 @@
+'use strict';
 module.exports = {
-  init: function (server, controller) {
+  init: function (server) {
     var controller = require('../controller/controller.js')
     server.route({
       method: 'GET',

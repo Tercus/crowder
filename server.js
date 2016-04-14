@@ -13,5 +13,5 @@ routes.init(server)
 //Start hapi-server or throw error on failure
 server.start((err) => {
     if (err) throw err
-    console.log('Server running at:', hserver.info.uri)
+    console.log('Server running at:', server.info.uri)
 })

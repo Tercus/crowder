@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   load: function (request, reply) {
     const sqlite3 = require("sqlite3").verbose()

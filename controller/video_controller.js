@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   load: function (request, reply) {
     const fs = require('fs')

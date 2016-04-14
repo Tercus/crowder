@@ -1,5 +1,4 @@
 'use strict';
-
 module.exports = {
   load: function (request, reply) {
     const WebTorrent = require('webtorrent-hybrid')
