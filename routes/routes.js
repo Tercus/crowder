@@ -22,10 +22,5 @@ module.exports = {
       path: '/upload',
       handler: controller.main('upload')
     })
-    server.route({
-      method: 'POST',
-      path: '/upload',
-      handler: controller.main('torrent')
-    })
   }
 }
