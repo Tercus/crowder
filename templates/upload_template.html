@@ -31,36 +31,15 @@ document.querySelector('form').addEventListener('submit', handlesubmit)
 
 //Catch the Event and extract the data from the form that would have been sent
 function handlesubmit (submit) {
-  var formData = new FormData(document.querySelector('form'))
-  startseed(formData)
   submit.preventDefault() // Prevent page refresh
-}
-
-//Using the data from the form, seed the torrent, or print error
-function startseed (formData) {
+  var formData = new FormData(document.querySelector('form'))
   torrentfile = formData.getAll('file')
   client.seed(torrentfile, { announceList: [['ws://localhost:8080']] })
   client.on('torrent', function (torrent) {
-    torrent.on('done', function() {
-      xhttp.open('POST', 'http://localhost:81/', true)
-      xhttp.onreadystatechange = handleresponse
-      var sendData = new FormData()
-      sendData.append('title', formData.get('title'))
-      sendData.append('desc', formData.get('desc'))
-      sendData.append('infoHash', torrent.infoHash)
-      xhttp.send(sendData)
-      console.log('Seeding file')
-    })
+//TODO:
+// - send data to seed to start downloading
+// - send data to the webserver to put into the DB
   })
-  function handleresponse() {
-    if(xhttp.responseText === 'done') {
-      console.log('Server has downloaded the file')
-      document.getElementById("progress").innerHTML = '<a href="http://localhost/">Upload completed, return to website</a>'
-    }
-    else {
-      console.log(xhttp.responseText)
-      document.getElementById("progress").innerHTML = '<a href="http://localhost/upload/">Ooops, seems like there was an error.</a>'
-    }
-  }
 }
+
 </script>
