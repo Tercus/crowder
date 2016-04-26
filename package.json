@@ -12,10 +12,7 @@
   "dependencies": {
     "hapi": "^13.2.1",
     "mustache": "^2.2.1",
-    "nes": "^4.2.1",
-    "socket.io": "^1.4.5",
     "sqlite3": "^3.1.1",
-    "webtorrent": "^0.86.1",
     "webtorrent-hybrid": "^1.0.0"
   }
 }

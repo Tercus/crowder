@@ -1,14 +1,10 @@
 {{^title}}
 <div id="progress">
   <h2>Start Uploading</h2>
-  <form action='http://localhost/upload' method='POST' enctype='multipart/form-data' name="uploadfile">
-    <input type='file' name='file'><br>
-    <input type='text' name='title' placeholder="Title" autocomplete="off"><br>
-    <input type='text' name='desc' placeholder="Description" autocomplete="off"><br>
-    <input type='submit' name='upload_btn' value='upload'>
-  </form>
-
-  <a href="http://localhost/">Cancel</a>
+  <input type='file' id='file' name='file' multiple><br>
+  <input type='text' id='title' name='title' placeholder="Title" autocomplete="off"><br>
+  <input type='text' id='desc' name='desc' placeholder="Description" autocomplete="off"><br>
+  <button onclick="handlesubmit()">Upload the file</button> <a href="http://localhost/">Cancel</a>
 </div>
 {{/title}}
 
@@ -17,29 +13,33 @@ Server is now downloading and will be seeding: {{title}}.<br>You may go back to 
 {{/title}}
 
 
-<script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
+<script src="https://cdn.jsdelivr.net/webtorrent/0.90.3/webtorrent.min.js"></script>
 <script>
+// Init webtorrent client
 var client = new WebTorrent()
-var xhttp = new XMLHttpRequest()
 
-client.on('error', (err) => {
-  console.error('ERROR: ' + err.message)
-})
+// Catch critical errors
+client.on('error', (err) => { console.error('ERROR: ' + err.message) })
 
-//Event listened triggered when user presses submit button
-document.querySelector('form').addEventListener('submit', handlesubmit)
-
-//Catch the Event and extract the data from the form that would have been sent
-function handlesubmit (submit) {
-  submit.preventDefault() // Prevent page refresh
-  var formData = new FormData(document.querySelector('form'))
-  torrentfile = formData.getAll('file')
-  client.seed(torrentfile, { announceList: [['ws://localhost:8080']] })
-  client.on('torrent', function (torrent) {
-//TODO:
-// - send data to seed to start downloading
-// - send data to the webserver to put into the DB
+// Send the data to the server
+function handlesubmit() {
+  var file = document.getElementById('file').value
+  var files = document.querySelector('#file').files
+  var title = document.getElementById('title').value
+  var desc = document.getElementById('desc').value
+  console.log('File: ' + file)
+  console.log('Files: ' + files.toSource())
+  console.log('Title: ' + title)
+  console.log('Description: ' + desc)
+  var fto = []
+  for (var i = 0; i < files.length; i++) {
+    fto.push(files.item(i))
+  }
+  var torrent = client.seed(fto, { announceList: [['ws://localhost:8080']] })
+  torrent.on('ready', function () {
+    console.log('Torrent is ready and seeding: ' + torrent.infoHash)
   })
+  
 }
 
 </script>
