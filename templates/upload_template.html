@@ -1,11 +1,11 @@
 {{^title}}
-<h2>Start Uploading</h2>
-<form action='http://localhost/upload' method='POST' enctype='multipart/form-data' name="uploadfile">
-    <input type='file' name='file' id="fileupload" multiple><br>
-    <input type='submit' name='upload_btn' value='upload'> <a href="http://localhost/">Cancel</a>
-</form>
-
-<div id="progress"> </div>
+<div id="progress">
+  <h2>Start Uploading</h2>
+  <input type='file' id='file' name='file' multiple><br>
+  <input type='text' id='title' name='title' placeholder="Title" autocomplete="off"><br>
+  <input type='text' id='desc' name='desc' placeholder="Description" autocomplete="off"><br>
+  <button onclick="handlesubmit()">Upload the file</button> <a href="http://localhost/">Cancel</a>
+</div>
 {{/title}}
 
 {{#title}}
@@ -13,30 +13,33 @@ Server is now downloading and will be seeding: {{title}}.<br>You may go back to 
 {{/title}}
 
 
-<script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>
+<script src="https://cdn.jsdelivr.net/webtorrent/0.90.3/webtorrent.min.js"></script>
 <script>
+// Init webtorrent client
 var client = new WebTorrent()
-var xhttp = new XMLHttpRequest()
 
-client.on('error', (err) => {
-	console.error('ERROR: ' + err.message)
-})
+// Catch critical errors
+client.on('error', (err) => { console.error('ERROR: ' + err.message) })
 
-document.querySelector('form').addEventListener('submit', function (e) {
-	e.preventDefault() // Prevent page refresh
-	
-	var selectedFiles = document.querySelector('form input[name=file]').files
-	var fto = []
-	for (var i = 0; i < selectedFiles.length; i++) {
-		fto.push(selectedFiles.item(i))
-	}
-	console.log('Adding: ' + fto)
-	client.seed(fto, { announceList: [['http://localhost:8080'], ['udp://localhost:8080'], ['ws://localhost:8080'], ['wss://localhost:8080']] }, onTorrent)
-})
-
-function onTorrent (torrent) {
-	xhttp.open('POST', 'http://localhost/upload', true)
-	xhttp.send(torrent.infoHash)
+// Send the data to the server
+function handlesubmit() {
+  var file = document.getElementById('file').value
+  var files = document.querySelector('#file').files
+  var title = document.getElementById('title').value
+  var desc = document.getElementById('desc').value
+  console.log('File: ' + file)
+  console.log('Files: ' + files.toSource())
+  console.log('Title: ' + title)
+  console.log('Description: ' + desc)
+  var fto = []
+  for (var i = 0; i < files.length; i++) {
+    fto.push(files.item(i))
+  }
+  var torrent = client.seed(fto, { announceList: [['ws://localhost:8080']] })
+  torrent.on('ready', function () {
+    console.log('Torrent is ready and seeding: ' + torrent.infoHash)
+  })
+  
 }
 
 </script>
