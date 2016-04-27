@@ -23,23 +23,24 @@ client.on('error', (err) => { console.error('ERROR: ' + err.message) })
 
 // Send the data to the server
 function handlesubmit() {
-  var file = document.getElementById('file').value
-  var files = document.querySelector('#file').files
+  var file = document.getElementById('file').files
   var title = document.getElementById('title').value
   var desc = document.getElementById('desc').value
-  console.log('File: ' + file)
-  console.log('Files: ' + files.toSource())
+  console.log('Files: ' + file.toSource())
   console.log('Title: ' + title)
   console.log('Description: ' + desc)
   var fto = []
-  for (var i = 0; i < files.length; i++) {
-    fto.push(files.item(i))
+  for (var i = 0; i < file.length; i++) {
+    fto.push(file.item(i))
   }
-  var torrent = client.seed(fto, { announceList: [['ws://localhost:8080']] })
+  console.log('Array: ' + fto)
+  var torrent = client.seed(fto, { announceList: [['ws://localhost:8080']], name: title })
   torrent.on('ready', function () {
     console.log('Torrent is ready and seeding: ' + torrent.infoHash)
+    var xhttp = new XMLHttpRequest()
+    xhttp.open('POST', 'http://localhost:8081/' + torrent.infoHash, true)
+    xhttp.send()
   })
-  
 }
 
 </script>
