@@ -5,22 +5,22 @@ module.exports = {
     server.route({
       method: 'GET',
       path: '/',
-      handler: controller.main('default')
+      handler: controller.use('default')
     })
     server.route({
       method: 'GET',
       path: '/watch/{video?}',
-      handler: controller.main('video')
+      handler: controller.use('video')
     })
     server.route({
       method: 'GET',
       path: '/visit/{user?}',
-      handler: controller.main('user')
+      handler: controller.use('user')
     })
     server.route({
       method: 'GET',
       path: '/upload',
-      handler: controller.main('upload')
+      handler: controller.use('upload')
     })
   }
 }

@@ -11,6 +11,6 @@ routes.init(server)
 
 //Start hapi-server or throw error on failure
 server.start((err) => {
-    if (err) throw err
-    console.log('Webserver listening on: ' + server.select('web').info.uri)
+  if (err) throw err
+  console.log('Webserver listening on: ' + server.select('web').info.uri)
 })
