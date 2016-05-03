@@ -14,14 +14,14 @@
 
   <meta name="author" content="Enlighten Designs" />
 
-  <style type="text/css" media="all">@import "css/style.css";</style>  
+  <style type="text/css" media="all">@import "/css/style.css";</style>  
 </head>
 
 <body>
 
 <div id="page-container">
   <div id="header">
-    <div id="logo"><img src="./images/logo.jpg"></div>
+    <div id="logo"></div>
     <div id="title"><h1>Crowder</h1></div>
     <div id="main-nav">
 <!--
@@ -83,16 +83,24 @@
         and as such are not hosting videos that have licenses that would restrict playback to
         certain countries.
       </p>
+      
+      <h2>A long piece of text so I have to scroll</h2>
+      <p>
+        Start
+        <br><br><br><br><br><br><br><br><br><br><br>
+        Stop
+      </p>
     </div>
-  </div>
-  <div id="footer">
+    <div id="footer">
 <!--
     I think the footer will always be the same, so I can make that one static. But I will probably
     still externalize it, just to make it simpler to change it later on. This file really should
-    just be a skeleton.
+    just be a skeleton. Also this does not need the padding of the content, that's why it is outside
+    of it.
     {{> footer}}
 -->
-    Footer
+      Footer
+    </div>
   </div>
 </div>
 
